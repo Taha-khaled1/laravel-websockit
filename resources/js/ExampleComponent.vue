@@ -1,53 +1,54 @@
 <template>
   <div>
-    <h1>{{ message }}</h1>
-    <h1>{{ nowX() }}</h1>
-    <h1>{{ showAge() }}</h1>
-
-
-
-    <p>
-      Name: <span>{{ latestTradeUser }}</span> <!-- Data binding here -->
-    </p>
-
-
-
-
+    <h1>Chat Room</h1>
+    <div v-for="msg in messages" :key="msg.id" :class="{ 'my-message': msg.isMine, 'other-message': !msg.isMine }">
+      <strong>{{ msg.user }}:</strong> {{ msg.content }}
+    </div>
+    <input v-model="newMessage" @keyup.enter="sendMessage" placeholder="Type a message..." />
   </div>
 </template>
 
 <script>
 export default {
-   data() {
-     return {
-       message: 'Hello from Vue!',
-       age: 'Hello my age is 28!',
-       latestTradeUser: ''  // New data property
-     };
-   },
-   methods :{
-     nowX(){
-         return "hi everyone"
-     },
-     showAge(){
-         return `${this.age}`
-     }
-   },
-   mounted(){
-    window.Echo.channel('trades')
-        .listen('NewTrade', (e) => {
-            console.log(e.trade);
-               console.log("asddddddddddddddddddd");
-            this.latestTradeUser  = e.trade;
+  data() {
+    return {
+      newMessage: '',
+      messages: [],
+      user: '' // Set this dynamically from authenticated user
+    };
+  },
+  mounted() {
+    this.user = 'YourUserName'; // Retrieve this dynamically from session or API
+    window.Echo.channel('chat')
+      .listen('MessageSent', (e) => {
+        this.messages.push({
+          content: e.message,
+          user: e.user,
+          isMine: e.user === this.user,
+          id: this.messages.length + 1 // Improve ID assignment for production
         });
-
-   },
+      });
+  },
+  methods: {
+    sendMessage() {
+      axios.post('/send-message', { message: this.newMessage })
+        .then(response => {
+          this.newMessage = ''; // Reset the input after sending
+        })
+        .catch(error => {
+          console.error('There was an error!', error);
+        });
+    }
+  }
 };
-
 </script>
 
 <style scoped>
-h1 {
+.my-message {
   color: blue;
+}
+
+.other-message {
+  color: red;
 }
 </style>
