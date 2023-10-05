@@ -11,7 +11,7 @@
 <body>
 
     <div id="app">
-        <example-component></example-component>
+        <databse-component></example-component>
 
     </div>
 

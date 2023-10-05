@@ -1,6 +1,10 @@
 <?php
+
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,11 +17,21 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
+Route::get('/user/send-message', [ChatController::class, 'sendMessage']);
+Route::get('/get-messages',[ChatController::class, 'getMessages']);
+
+
+Route::get('/user/register', [UserController::class, 'register']);
+Route::get('/user/count', [UserController::class, 'count']);
+Route::get('/users', [UserController::class,'show']);
 Route::post('/send-message', [PostController::class,'sendMessage'])->middleware('auth');
 Route::get('test',[PostController::class,'test'])->name('test');
 Route::get('goToChat',[PostController::class,'goToChat'])->name('goToChat');
 Route::get('/', function () {
-    return view('welcome');
+    $usersdata = User::all();
+    return view('welcome',compact("usersdata"));
 })->middleware('auth');
 
 Route::get('/dashboard', function () {
