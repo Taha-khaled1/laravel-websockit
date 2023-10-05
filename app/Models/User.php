@@ -42,4 +42,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+     public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    /**
+     * Get the chats that the user is participating in.
+     */
+    public function chats()
+    {
+        return $this->belongsToMany(Chat::class, 'participants');
+    }
 }

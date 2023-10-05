@@ -4,18 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Message extends Model
+class Participant extends Model
 {
     use HasFactory;
-      protected $fillable = [
-        'chat_id',
-        'user_id',
-        'message',
-    ];
+    protected $table = 'participants';
+
+    public $incrementing = true;
 
     /**
-     * Get the user that sent the message.
+     * Get the user participating in the chat.
      */
     public function user()
     {
@@ -23,7 +22,7 @@ class Message extends Model
     }
 
     /**
-     * Get the chat that the message belongs to.
+     * Get the chat that the user is participating in.
      */
     public function chat()
     {
