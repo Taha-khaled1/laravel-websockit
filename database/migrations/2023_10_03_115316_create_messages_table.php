@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('messages', function (Blueprint $table) {
+            // $table->engine = 'InnoDB';
             $table->id();
             $table->foreignId('chat_id')->constrained('chats');
             $table->foreignId('user_id')->constrained('users');

@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('participants', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('chat_id')->constrained('chats');
             $table->timestamps();
         });
     }

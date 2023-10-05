@@ -6,7 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\MassgeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +17,22 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
+Route::get('/chats', [MassgeController::class, 'index'])->name('chats.index');
+
+// Show a Chat and Its Messages
+Route::get('/chats/show', [MassgeController::class, 'show'])->name('chats.show');
+
+// Create a New Chat
+Route::get('/chats/create', [MassgeController::class, 'createChat'])->name('chats.create');
+
+// Send a Message to a Chat
+Route::get('/chats/send', [MassgeController::class, 'sendMessage'])->name('chats.sendMessage');
+
+
+
+
 
 
 Route::get('/user/send-message', [ChatController::class, 'sendMessage']);
